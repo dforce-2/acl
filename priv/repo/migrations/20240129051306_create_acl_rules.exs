@@ -3,16 +3,8 @@ defmodule Acl.Repo.Migrations.CreateAclRules do
 
   def change do
     create table(:acl_rules) do
-      add :role,
-          references(:acl_roles,
-            column: :role,
-            type: :string,
-            on_delete: :delete_all,
-            primary_key: true
-          )
-
-      add :resource_id,
-          references(:acl_resources, column: :id, type: :id, on_delete: :delete_all, primary_key: true)
+      add :role_id, references(:acl_roles, on_delete: :delete_all)
+      add :resource_id, references(:acl_resources, on_delete: :delete_all)
 
       add :action, :string, default: nil
       add :allowed, :boolean, default: false
@@ -25,8 +17,8 @@ defmodule Acl.Repo.Migrations.CreateAclRules do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:acl_rules, [:role])
+    create index(:acl_rules, [:role_id])
     create index(:acl_rules, [:resource_id])
-    create index(:acl_rules, [:role, :resource_id])
+    create index(:acl_rules, [:role_id, :resource_id])
   end
 end
